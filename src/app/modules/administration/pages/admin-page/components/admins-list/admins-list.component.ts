@@ -57,7 +57,7 @@ export class AdminsListComponent implements OnInit {
     this.asideIndex = 0;
   }
 
-  onAdminUpdated(admin: any): void {
+  onAdminUpdated(event: any): void {
     this.asideIndex = 0;
     this.selectedAdmin = null;
     this.loadAdmins();
