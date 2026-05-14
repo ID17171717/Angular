@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-interface Admin {
-  admin_id: number;
-  admin_login: string;
-  admin_password_hash: string;
-  is_active_admin: any;
-  admin_birth_date: string;
-  created_at: string;
-}
-
 @Component({
   selector: 'app-admins-list',
   templateUrl: './admins-list.component.html',
@@ -17,8 +8,8 @@ interface Admin {
 })
 export class AdminsListComponent implements OnInit {
   asideIndex: number = 0;
-  admins: Admin[] = [];
-  selectedAdmin: Admin | null = null;
+  admins: any[] = [];
+  selectedAdmin: any = null;
 
   constructor(private http: HttpClient) {}
 
@@ -26,14 +17,17 @@ export class AdminsListComponent implements OnInit {
     this.loadAdmins();
   }
 
+  get adminsWithActions(): any[] {
+    return this.admins.map(admin => ({
+      ...admin,
+      admin_password_hash: '********'
+    }));
+  }
+
   loadAdmins(): void {
     this.http.get<any>('/api/admins').subscribe({
       next: (response) => {
-        let data = response.data || response;
-        this.admins = data.map((admin: Admin) => ({
-          ...admin,
-          admin_password_hash: '********'
-        }));
+        this.admins = response.data || response;
       },
       error: (err) => console.error('Ошибка загрузки:', err)
     });
@@ -41,25 +35,30 @@ export class AdminsListComponent implements OnInit {
 
   onAddAdminBtn(): void {
     this.asideIndex = 1;
-    this.selectedAdmin = null;
   }
 
-  onAdminSelect(admin: Admin): void {
-    this.asideIndex = 2;
+  onAdminSelect(admin: any): void {
     this.selectedAdmin = admin;
+    this.asideIndex = 2;
   }
 
-  onAdminAdded(newAdmin: any): void {
-    this.admins.push({
-      ...newAdmin,
-      admin_password_hash: '********'
-    });
+  onAdminAdded(event: any): void {
     this.asideIndex = 0;
+    this.loadAdmins();
   }
 
   onAdminUpdated(event: any): void {
     this.asideIndex = 0;
     this.selectedAdmin = null;
     this.loadAdmins();
+  }
+
+  deleteAdmin(id: number): void {
+    if (confirm('Удалить администратора?')) {
+      this.http.delete(`/api/admins/${id}`).subscribe({
+        next: () => this.loadAdmins(),
+        error: (err) => console.error('Ошибка удаления:', err)
+      });
+    }
   }
 }
