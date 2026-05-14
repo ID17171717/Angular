@@ -8,7 +8,8 @@
     <app-table
       [columnHeaders]="['admin_id', 'Логин', 'Пароль', 'Активен', 'Дата рождения', 'Дата создания']"
       [data]="admins"
-      (rowClick)="onAdminSelect($event)">
+      (rowClick)="onAdminSelect($event)"
+      (deleteClick)="deleteAdmin($event.admin_id)">
     </app-table>
   </div>
 

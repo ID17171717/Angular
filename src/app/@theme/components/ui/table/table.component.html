@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th *ngFor="let header of columnHeaders">{{ header }}</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -11,9 +12,10 @@
           ? 'var(--block-child-background)'
           : 'var(--block-background)'
       }">
-        <p>
-          {{ row[header] }}
-        </p>
+        <p>{{ row[header] }}</p>
+      </td>
+      <td (click)="$event.stopPropagation()">
+        <button (click)="onDelete(row, $event)">Удалить</button>
       </td>
     </tr>
   </tbody>

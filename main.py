@@ -93,6 +93,17 @@ def update_admin(admin_id: int, admin: AdminUpdate):
     finally:
         conn.close()
 
+@app.delete("/api/admins/{admin_id}")
+def delete_admin(admin_id: int):
+    conn = pymysql.connect(**DB_CONFIG)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM admins WHERE admin_id = %s", (admin_id,))
+        conn.commit()
+        return {"status": "ok", "message": "Админ удалён"}
+    finally:
+        conn.close()
+
 @app.get("/")
 def root():
     return {"status": "ok"}

@@ -9,6 +9,7 @@ export class TableComponent implements OnChanges {
   @Input() columnHeaders: string[] = [];
   @Input() data: any[] = [];
   @Output() rowClick = new EventEmitter<any>();
+  @Output() deleteClick = new EventEmitter<any>();
   dataKeys: string[] = [];
 
   ngOnChanges() {
@@ -46,8 +47,12 @@ export class TableComponent implements OnChanges {
         if (s != 0){
           ps[s].classList.add('tudasuda')
         }
-        
       }
     }
+  }
+
+  onDelete(row: any, event: Event): void {
+    event.stopPropagation();
+    this.deleteClick.emit(row);
   }
 }

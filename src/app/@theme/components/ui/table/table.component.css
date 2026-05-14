@@ -5,7 +5,6 @@ table {
 
 th, td {
   padding: 10px;
-  font-size: 17px;
 }
 
 th {
@@ -20,7 +19,7 @@ td {
 tbody tr:hover td {
   background-color: rgba(61, 83, 209, 0.767) !important;
   cursor: pointer;
-  transition: .1s;
+
 }
 
   .black{
